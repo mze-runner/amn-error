@@ -1,6 +1,11 @@
-/// <reference path="index.d.ts"/>
 import { AmnError } from './AmnError';
 // export { AmnError };
+
+declare interface IErrorCode {
+    status: number;
+    code: string;
+    message: string;
+}
 
 export { amnErrorHandler, errorHandler } from './mw';
 

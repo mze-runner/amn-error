@@ -1,5 +1,3 @@
-// development error handler
-
 import { Request, Response, NextFunction } from 'express';
 import { AmnError } from './AmnError';
 

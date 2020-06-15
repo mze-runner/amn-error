@@ -103,7 +103,8 @@ and as the second parameter - `explanation` - optional extra filed to provide mo
 ## How use middleware
 
 Amn Error provides two middleware.
-`amnErrorHandler` - to handle bespoke amn error class
+`amnErrorHandler` - to handle bespoke amn error class.
+
 `errorHandler` - to handle an error raised by native nodejs `Error`, but reply to a client with a http status code. By default status code is `500`.
 
 > Do not use amnErrorHandler and errorHandler on the same app setup. `errorHandler` provided just for compatibility with native nodejs `Error` class.

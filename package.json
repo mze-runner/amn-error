@@ -1,6 +1,6 @@
 {
     "name": "amn-error",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Amn extension to nodejs Error class and provides ready-to-use express error handle middleware",
     "main": "./build/index.js",
     "types": "./build/index.d.ts",

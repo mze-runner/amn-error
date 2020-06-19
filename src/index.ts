@@ -6,7 +6,7 @@ declare interface IErrorCode {
     message: string;
 }
 
-export { amnErrorHandler, errorHandler } from './mw';
+import { amnErrorHandler, errorHandler } from './mw';
 
 /**
  * Error function
@@ -15,7 +15,7 @@ export { amnErrorHandler, errorHandler } from './mw';
  * @param message - free text to explain a reason
  * @param explanation - optional extra filed to provide more derails around a nature of an error
  */
-export const error = (
+const error = (
     status: number,
     code: string,
     message: string,
@@ -27,5 +27,7 @@ export const error = (
  * @param errCode - is an interface, provides status
  * @param explanation
  */
-export const errorCode = (errCode: IErrorCode, explanation?: string) =>
+const errorCode = (errCode: IErrorCode, explanation?: string) =>
     new AmnError(errCode.status, errCode.code, errCode.message, explanation);
+
+export default { error, errorCode, amnErrorHandler, errorHandler };

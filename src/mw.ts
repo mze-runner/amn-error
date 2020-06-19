@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { AmnError } from './AmnError';
 
-export const amnErrorHandler = (
+export const errorHandler = (
     err: Error,
     req: Request,
     res: Response,
@@ -27,7 +27,7 @@ export const amnErrorHandler = (
     res.status(500).send({ code: err.name, message: err.message });
 };
 
-export const errorHandler = (
+export const defaultErrorHandler = (
     err: Error,
     req: Request,
     res: Response,

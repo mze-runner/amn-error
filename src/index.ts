@@ -1,12 +1,11 @@
 import { AmnError } from './AmnError';
+import { defaultErrorHandler, errorHandler } from './mw';
 
 declare interface IErrorCode {
     status: number;
     code: string;
     message: string;
 }
-
-import { defaultErrorHandler, errorHandler } from './mw';
 
 /**
  * Error function
@@ -30,4 +29,5 @@ const create = (
 const withCode = (errCode: IErrorCode, explanation?: string) =>
     new AmnError(errCode.status, errCode.code, errCode.message, explanation);
 
+export { create, withCode, defaultErrorHandler, errorHandler };
 export default { create, withCode, defaultErrorHandler, errorHandler };

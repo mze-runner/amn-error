@@ -57,14 +57,14 @@ throw error.create(
     'invalid email'
 );
 
-throw error.withCode(
+throw error.create(
     404,
     'NOT_FOUND',
     'resource not found',
     'fail to find user account'
 );
 
-throw error(
+throw error.create(
     500,
     'INTERNAL_SERVER_ERROR',
     'critical server-side internal error'

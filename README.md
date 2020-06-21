@@ -19,9 +19,9 @@ Amn Error gives more flexibility on declaring error back to a client.
 For example, 401 - unauthorized may looks like following.
 
 ```javascript
-import { error } from 'amn-error';
+import error from 'amn-error';
 
-throw error(401, 'UNAUTHORIZED', 'bad credentials');
+throw error.create(401, 'UNAUTHORIZED', 'bad credentials');
 ```
 
 Client get back `http status code` as 401 (unauthorized)
@@ -40,7 +40,7 @@ And JSON object
 Amn error provides two ways to raise an error by means on bespoke AmnError Class.
 
 ```javascript
-import { error } from 'amn-error';
+import error from 'amn-error';
 
 /**
  * Error function
@@ -50,9 +50,14 @@ import { error } from 'amn-error';
  * @param explanation - optional extra filed to provide more derails around a nature of an error
  */
 
-throw error(400, 'BAD_REQUEST', 'bad request from client', 'invalid email');
+throw error.create(
+    400,
+    'BAD_REQUEST',
+    'bad request from client',
+    'invalid email'
+);
 
-throw error(
+throw error.withCode(
     404,
     'NOT_FOUND',
     'resource not found',
@@ -71,7 +76,7 @@ On large scale services, it may be worth to pre-define errors as JSON object and
 Amn Error delivers an extra function to support a more declarative approach
 
 ```javascript
-import { errorCode } from 'amn-error';
+import error from 'amn-error';
 
 // pre-define error code object
 const BAD_REQUEST: { status: 400, code: 'BAD_REQUEST', message: 'bad request from client' };
@@ -81,11 +86,11 @@ const UNAUTHORIZED: { status: 401, code: 'UNAUTHORIZED', message: 'user is not a
 const INTERNAL_SERVER_ERROR: { status: 500, code: 'INTERNAL_SERVER_ERROR', message: 'critical server-side internal error' }
 
 // raise and error examples
-throw errorCode(BAD_REQUEST, 'invalid email');
+throw error.withCode(BAD_REQUEST, 'invalid email');
 
-throw error(UNAUTHORIZED);
+throw error.withCode(UNAUTHORIZED);
 
-throw error( INTERNAL_SERVER_ERROR);
+throw error.withCode( INTERNAL_SERVER_ERROR);
 ```
 
 `errorCode` function consume as parameters an object with the following interface
@@ -107,12 +112,12 @@ Amn Error provides two middleware.
 
 `errorHandler` - to handle an error raised by native nodejs `Error`, but reply to a client with a http status code. By default status code is `500`.
 
-> Do not use amnErrorHandler and errorHandler on the same app setup. `errorHandler` provided just for compatibility with native nodejs `Error` class.
+> `defaultErrorHandler` provided just for compatibility with native nodejs `Error` class.
 
 ```javascript
-import { amnErrorHandler } from 'amn-error';
+import error from 'amn-error';
 
 const app = express();
 
-this.app.use(amnErrorHandler);
+this.app.use(error.errorHandler);
 ```

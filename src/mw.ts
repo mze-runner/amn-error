@@ -11,16 +11,11 @@ export const errorHandler = (
     // print stacktrace
     console.log(err.stack);
     if (err instanceof AmnError) {
-        console.log(err.getStatus());
-        console.log(err.getCode());
-        console.log(err.getMessage());
-
         return res.status(err.getStatus()).send({
             code: err.getCode(),
             message: err.getMessage(),
             explain: err.getExplanation(),
         });
-        // logger.debug('Error:Sent');
     }
     // default error handler
     console.log('NodeJs Regular Error');

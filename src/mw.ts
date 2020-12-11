@@ -1,15 +1,21 @@
 import { Request, Response, NextFunction } from 'express';
 import { AmnError } from './AmnError';
 
-export const errorHandler = (
+const isFunction = (foo: Function) => {
+    if (typeof foo === 'function') return true;
+    return false;
+};
+
+export const errorHandler = (logger: Function) => (
     err: Error,
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
-    console.log('======== AMN: Error Handler Middleware =============');
-    // print stacktrace
-    console.log(err.stack);
+    const enableLogging = isFunction(logger);
+    enableLogging &&
+        logger('======== AMN: Error Handler Middleware =============');
+    enableLogging && logger(err.stack);
     if (err instanceof AmnError) {
         return res.status(err.getStatus()).send({
             code: err.getCode(),
@@ -18,9 +24,31 @@ export const errorHandler = (
         });
     }
     // default error handler
-    console.log('NodeJs Regular Error');
+    enableLogging && logger('NodeJs Regular Error');
+    // console.log('NodeJs Regular Error');
     res.status(500).send({ code: err.name, message: err.message });
 };
+
+// export const errorHandler = (
+//     err: Error,
+//     req: Request,
+//     res: Response,
+//     next: NextFunction
+// ) => {
+//     // console.log('======== AMN: Error Handler Middleware =============');
+//     // print stacktrace
+//     // console.log(err.stack);
+//     if (err instanceof AmnError) {
+//         return res.status(err.getStatus()).send({
+//             code: err.getCode(),
+//             message: err.getMessage(),
+//             explain: err.getExplanation(),
+//         });
+//     }
+//     // default error handler
+//     // console.log('NodeJs Regular Error');
+//     res.status(500).send({ code: err.name, message: err.message });
+// };
 
 export const defaultErrorHandler = (
     err: Error,

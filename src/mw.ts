@@ -6,7 +6,14 @@ import { AmnError } from './AmnError';
 //     return false;
 // };
 
-export const errorHandler = () => (
+// export const errorHandler = () => (
+//     err: Error,
+//     req: Request,
+//     res: Response,
+//     next: NextFunction
+// ) => {
+
+export const errorHandler = (
     err: Error,
     req: Request,
     res: Response,

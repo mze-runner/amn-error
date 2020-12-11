@@ -12,7 +12,7 @@ AMN Error able to accommodate additional fields in compare to nodejs native erro
 
 `message` - is inherited from nodejs `Error` class.
 
-`explanation` - an optional field to accommodate more detail on error nature you want to provide to a client.
+`explanation` - an optional field to accommodate more details on the error nature you want to inform the client.
 
 Amn Error gives more flexibility on declaring error back to a client.
 
@@ -24,7 +24,7 @@ import error from 'amn-error';
 throw error.create(401, 'UNAUTHORIZED', 'bad credentials');
 ```
 
-Client get back `http status code` as 401 (unauthorized)
+Client receives `http status code` as 401 (unauthorized)
 
 And JSON object
 
@@ -79,21 +79,33 @@ Amn Error delivers an extra function to support a more declarative approach
 import error from 'amn-error';
 
 // pre-define error code object
-const BAD_REQUEST: { status: 400, code: 'BAD_REQUEST', message: 'bad request from client' };
+const BAD_REQUEST: {
+    status: 400,
+    code: 'BAD_REQUEST',
+    message: 'bad request from client',
+};
 
-const UNAUTHORIZED: { status: 401, code: 'UNAUTHORIZED', message: 'user is not authorized' }
+const UNAUTHORIZED: {
+    status: 401,
+    code: 'UNAUTHORIZED',
+    message: 'user is not authorized',
+};
 
-const INTERNAL_SERVER_ERROR: { status: 500, code: 'INTERNAL_SERVER_ERROR', message: 'critical server-side internal error' }
+const INTERNAL_SERVER_ERROR: {
+    status: 500,
+    code: 'INTERNAL_SERVER_ERROR',
+    message: 'critical server-side internal error',
+};
 
 // raise and error examples
 throw error.withCode(BAD_REQUEST, 'invalid email');
 
 throw error.withCode(UNAUTHORIZED);
 
-throw error.withCode( INTERNAL_SERVER_ERROR);
+throw error.withCode(INTERNAL_SERVER_ERROR);
 ```
 
-`errorCode` function consume as parameters an object with the following interface
+`withCode` function is a proxy to error.create. It consumes the object as parameter following interface
 
 ```javascript
 declare interface IErrorCode {
@@ -103,14 +115,14 @@ declare interface IErrorCode {
 }
 ```
 
-and as the second parameter - `explanation` - optional extra filed to provide more derails around a nature of
+`explanation` - is the second _optional_ parameter providing more derails around the nature of error.
 
 ## How use middleware
 
 Amn Error provides two middleware.
-`amnErrorHandler` - to handle bespoke amn error class.
+`errorHandler` - to handle bespoke amn error class.
 
-`errorHandler` - to handle an error raised by native nodejs `Error`, but reply to a client with a http status code. By default status code is `500`.
+`defaultErrorHandler` - to handle an error raised by native nodejs `Error`, but reply to a client with a http status code. By default status code is `500`.
 
 > `defaultErrorHandler` provided just for compatibility with native nodejs `Error` class.
 
@@ -119,5 +131,20 @@ import error from 'amn-error';
 
 const app = express();
 
-this.app.use(error.errorHandler);
+app.use(error.errorHandler);
+```
+
+## Logging errors
+
+Amn Error middleware provide capability to perform logging by means of callback function.
+
+`errorHandler` middleware accepts _optional_ callback **function**.
+
+```javascript
+import error from 'amn-error';
+import logger from 'my-logger';
+
+const app = express();
+
+app.use(error.errorHandler(logger.error));
 ```

@@ -1,21 +1,23 @@
 import { Request, Response, NextFunction } from 'express';
 import { AmnError } from './AmnError';
 
-const isFunction = (foo?: Function) => {
-    if (typeof foo === 'function') return true;
-    return false;
-};
+// const isFunction = (foo?: Function) => {
+//     if (typeof foo === 'function') return true;
+//     return false;
+// };
 
-export const errorHandler = (logger?: Function) => (
+export const errorHandler = () => (
     err: Error,
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
-    const enableLogging = isFunction(logger);
-    enableLogging &&
-        logger!('======== AMN: Error Handler Middleware =============');
-    enableLogging && logger!(err.stack);
+    // const enableLogging = isFunction(logger);
+    // enableLogging &&
+    //     logger!('======== AMN: Error Handler Middleware =============');
+    // enableLogging && logger!(err.stack);\
+    console.log('======== AMN: Error Handler Middleware =============');
+    console.log(err.stack);
     if (err instanceof AmnError) {
         return res.status(err.getStatus()).send({
             code: err.getCode(),
@@ -24,8 +26,8 @@ export const errorHandler = (logger?: Function) => (
         });
     }
     // default error handler
-    enableLogging && logger!('NodeJs Regular Error');
-    // console.log('NodeJs Regular Error');
+    // enableLogging && logger!('NodeJs Regular Error');
+    console.log('NodeJs Regular Error');
     res.status(500).send({ code: err.name, message: err.message });
 };
 

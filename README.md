@@ -133,18 +133,3 @@ const app = express();
 
 app.use(error.errorHandler);
 ```
-
-## Logging errors
-
-Amn Error middleware provide capability to perform logging by means of callback function.
-
-`errorHandler` middleware accepts _optional_ callback **function**.
-
-```javascript
-import error from 'amn-error';
-import logger from 'my-logger';
-
-const app = express();
-
-app.use(error.errorHandler(logger.error));
-```
